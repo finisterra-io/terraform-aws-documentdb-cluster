@@ -4,6 +4,18 @@ variable "zone_id" {
   description = "Route53 parent zone ID. If provided (not empty), the module will create sub-domain DNS records for the DocumentDB master and replicas"
 }
 
+variable "cluster_identifier" {
+  type        = string
+  description = "The cluster identifier. If omitted, Terraform will assign a random, unique identifier"
+  default     = ""
+}
+
+variable "final_snapshot_identifier" {
+  type        = string
+  description = "The name of your final DB snapshot when this DB cluster is deleted. If omitted, no final snapshot will be made"
+  default     = null
+}
+
 variable "allowed_security_groups" {
   type        = list(string)
   default     = []
@@ -173,4 +185,109 @@ variable "enable_performance_insights" {
   type        = bool
   description = "Specifies whether to enable Performance Insights for the DB Instance."
   default     = false
+}
+
+variable "db_cluster_parameter_group_name" {
+  type        = string
+  description = "The name of a DB cluster parameter group to use"
+  default     = ""
+}
+
+variable "create_random_password" {
+  type        = bool
+  description = "Whether to create a random password for the DocumentDB cluster"
+  default     = true
+}
+
+
+##### Security group #####
+variable "security_group_name" {
+  type        = string
+  description = "Name of the security group to create for the DocumentDB cluster"
+  default     = ""
+}
+
+variable "security_group_description" {
+  type        = string
+  description = "Description of the security group to create for the DocumentDB cluster"
+  default     = ""
+}
+
+variable "security_group_tags" {
+  type        = map(string)
+  description = "Additional tags for the security group to create for the DocumentDB cluster"
+  default     = {}
+}
+
+variable "security_group_rules" {
+  description = "Map of security group rules"
+  type = map(object({
+    cidr_blocks            = list(string)
+    id                     = string
+    protocol               = string
+    security_group_id      = string
+    security_group_rule_id = string
+    type                   = string
+    description            = optional(string)
+    from_port              = optional(number)
+    to_port                = optional(number)
+  }))
+}
+
+### cluster instance ### 
+
+variable "cluster_instances" {
+  description = "List of DocumentDB cluster instances"
+  type        = map(any)
+}
+
+### db subnet group ###
+
+variable "enable_aws_docdb_subnet_group" {
+  description = "Whether to create an AWS DocDB subnet group"
+  type        = bool
+  default     = false
+}
+
+variable "db_subnet_group_name" {
+  description = "Name of the AWS DocDB subnet group"
+  type        = string
+  default     = ""
+}
+
+variable "db_subnet_group_description" {
+  description = "Description of the AWS DocDB subnet group"
+  type        = string
+  default     = ""
+}
+
+variable "db_subnet_group_tags" {
+  description = "Additional tags for the AWS DocDB subnet group"
+  type        = map(string)
+  default     = {}
+}
+
+### aws_docdb_cluster_parameter_group ###
+variable "enable_aws_docdb_cluster_parameter_group" {
+  description = "Whether to create an AWS DocDB cluster parameter group"
+  type        = bool
+  default     = false
+}
+
+variable "cluster_parameter_group_name" {
+  description = "Name of the AWS DocDB cluster parameter group"
+  type        = string
+  default     = ""
+}
+
+variable "cluster_parameter_group_description" {
+  description = "Description of the AWS DocDB cluster parameter group"
+  type        = string
+  default     = ""
+}
+
+variable "cluster_parameter_group_tags" {
+  description = "Additional tags for the AWS DocDB cluster parameter group"
+  type        = map(string)
+  default     = {}
 }

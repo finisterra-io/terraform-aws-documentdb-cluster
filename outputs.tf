@@ -29,16 +29,6 @@ output "reader_endpoint" {
   description = "A read-only endpoint of the DocumentDB cluster, automatically load-balanced across replicas"
 }
 
-output "master_host" {
-  value       = module.dns_master.hostname
-  description = "DB master hostname"
-}
-
-output "replicas_host" {
-  value       = module.dns_replicas.hostname
-  description = "DB replicas hostname"
-}
-
 output "security_group_id" {
   description = "ID of the DocumentDB cluster Security Group"
   value       = join("", aws_security_group.default[*].id)
