@@ -142,7 +142,7 @@ variable "kms_key_id" {
 variable "skip_final_snapshot" {
   type        = bool
   description = "Determines whether a final DB snapshot is created before the DB cluster is deleted"
-  default     = true
+  default     = null
 }
 
 variable "deletion_protection" {
@@ -154,7 +154,7 @@ variable "deletion_protection" {
 variable "apply_immediately" {
   type        = bool
   description = "Specifies whether any cluster modifications are applied immediately, or during the next maintenance window"
-  default     = true
+  default     = null
 }
 
 variable "auto_minor_version_upgrade" {

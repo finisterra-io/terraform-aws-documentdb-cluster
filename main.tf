@@ -35,7 +35,7 @@ resource "aws_docdb_cluster" "default" {
   final_snapshot_identifier       = var.final_snapshot_identifier
   skip_final_snapshot             = var.skip_final_snapshot
   deletion_protection             = var.deletion_protection
-  apply_immediately               = try(var.apply_immediately, null)
+  apply_immediately               = var.apply_immediately
   storage_encrypted               = var.storage_encrypted
   kms_key_id                      = var.kms_key_id
   port                            = var.db_port
@@ -60,6 +60,7 @@ resource "aws_docdb_cluster_instance" "default" {
   engine                       = each.value.engine
   auto_minor_version_upgrade   = each.value.auto_minor_version_upgrade
   enable_performance_insights  = try(each.value.enable_performance_insights, null)
+  promotion_tier               = each.value.promotion_tier
   tags                         = each.value.tags
 }
 
