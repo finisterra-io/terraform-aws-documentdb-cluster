@@ -24,6 +24,11 @@ resource "random_password" "password" {
   special = false
 }
 
+data "aws_security_group" "default" {
+  count = module.this.enabled && var.security_group_name != "" ? 1 : 0
+  name  = var.security_group_name
+}
+
 resource "aws_docdb_cluster" "default" {
   count                           = module.this.enabled ? 1 : 0
   cluster_identifier              = var.cluster_identifier
@@ -40,7 +45,7 @@ resource "aws_docdb_cluster" "default" {
   kms_key_id                      = var.kms_key_id
   port                            = var.db_port
   snapshot_identifier             = var.snapshot_identifier
-  vpc_security_group_ids          = [join("", aws_security_group.default[*].id)]
+  vpc_security_group_ids          = [join("", data.aws_security_group.default[*].id)]
   db_subnet_group_name            = var.db_subnet_group_name
   db_cluster_parameter_group_name = var.db_cluster_parameter_group_name
   engine                          = var.engine
