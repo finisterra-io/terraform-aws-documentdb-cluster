@@ -52,6 +52,12 @@ resource "aws_docdb_cluster" "default" {
   engine_version                  = var.engine_version
   enabled_cloudwatch_logs_exports = var.enabled_cloudwatch_logs_exports
   tags                            = module.this.tags
+
+  lifecycle {
+    ignore_changes = [
+      master_password
+    ]
+  }
 }
 
 resource "aws_docdb_cluster_instance" "default" {
