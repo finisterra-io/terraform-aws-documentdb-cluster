@@ -73,7 +73,7 @@ resource "aws_docdb_subnet_group" "default" {
   count       = module.this.enabled && var.enable_aws_docdb_subnet_group ? 1 : 0
   name        = var.db_subnet_group_name
   description = var.db_subnet_group_description
-  subnet_ids  = data.aws_subnet.default[*].ids
+  subnet_ids  = data.aws_subnet.default[*].arn
   tags        = var.db_subnet_group_tags
 }
 
