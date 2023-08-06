@@ -34,15 +34,15 @@ variable "allowed_cidr_blocks" {
   description = "List of CIDR blocks to be allowed to connect to the DocumentDB cluster"
 }
 
-variable "vpc_id" {
-  type        = string
-  description = "VPC ID to create the cluster in (e.g. `vpc-a22222ee`)"
-}
+# variable "vpc_id" {
+#   type        = string
+#   description = "VPC ID to create the cluster in (e.g. `vpc-a22222ee`)"
+# }
 
-variable "subnet_ids" {
-  type        = list(string)
-  description = "List of VPC subnet IDs to place DocumentDB instances in"
-}
+# variable "subnet_ids" {
+#   type        = list(string)
+#   description = "List of VPC subnet IDs to place DocumentDB instances in"
+# }
 
 # https://docs.aws.amazon.com/documentdb/latest/developerguide/limits.html#suported-instance-types
 variable "instance_class" {
@@ -290,4 +290,16 @@ variable "cluster_parameter_group_tags" {
   description = "Additional tags for the AWS DocDB cluster parameter group"
   type        = map(string)
   default     = {}
+}
+
+variable "vpc_name" {
+  description = "Name of the VPC"
+  type        = string
+  default     = ""
+}
+
+variable "subnet_names" {
+  description = "List of subnet names"
+  type        = list(string)
+  default     = []
 }

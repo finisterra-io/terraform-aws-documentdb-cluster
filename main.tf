@@ -2,7 +2,7 @@ resource "aws_security_group" "default" {
   count       = module.this.enabled ? 1 : 0
   name        = var.security_group_name
   description = var.security_group_description
-  vpc_id      = var.vpc_id
+  vpc_id      = data.aws_vpc.default[*].id
   tags        = var.security_group_tags
 }
 
@@ -15,7 +15,7 @@ resource "aws_security_group_rule" "default" {
   to_port           = try(each.value.to_port, -1)
   protocol          = each.value.protocol
   cidr_blocks       = each.value.cidr_blocks
-  security_group_id = each.value.security_group_id
+  security_group_id = [join("", data.aws_security_group.default[*].id)]
 }
 
 resource "random_password" "password" {
@@ -73,7 +73,7 @@ resource "aws_docdb_subnet_group" "default" {
   count       = module.this.enabled && var.enable_aws_docdb_subnet_group ? 1 : 0
   name        = var.db_subnet_group_name
   description = var.db_subnet_group_description
-  subnet_ids  = var.subnet_ids
+  subnet_ids  = data.aws_subnet.default[*].ids
   tags        = var.db_subnet_group_tags
 }
 
