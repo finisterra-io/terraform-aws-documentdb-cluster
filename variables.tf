@@ -344,3 +344,9 @@ variable "create_kms_key" {
   type        = bool
   default     = true
 }
+
+variable "create_security_group" {
+  description = "Whether the security group is enabled"
+  type        = bool
+  default     = false
+}

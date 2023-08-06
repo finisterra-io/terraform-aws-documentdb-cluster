@@ -1,5 +1,5 @@
 resource "aws_security_group" "default" {
-  count       = module.this.enabled ? 1 : 0
+  count       = module.this.enabled && var.create_security_group ? 1 : 0
   name        = var.security_group_name
   description = var.security_group_description
   vpc_id      = data.aws_vpc.default[0].id
@@ -15,7 +15,7 @@ resource "aws_security_group_rule" "default" {
   to_port           = try(each.value.to_port, -1)
   protocol          = each.value.protocol
   cidr_blocks       = each.value.cidr_blocks
-  security_group_id = aws_security_group.default[0].id
+  security_group_id = try(aws_security_group.default[0].id, data.aws_security_group.default[*].id)
 }
 
 resource "random_password" "password" {
@@ -24,10 +24,10 @@ resource "random_password" "password" {
   special = false
 }
 
-# data "aws_security_group" "default" {
-#   count = module.this.enabled && var.security_group_name != "" ? 1 : 0
-#   name  = var.security_group_name
-# }
+data "aws_security_group" "default" {
+  count = module.this.enabled && var.create_security_group == false ? 1 : 0
+  name  = var.security_group_name
+}
 
 resource "aws_docdb_cluster" "default" {
   count                           = module.this.enabled ? 1 : 0
@@ -45,7 +45,7 @@ resource "aws_docdb_cluster" "default" {
   kms_key_id                      = var.create_kms_key ? aws_kms_key.default[0].arn : null
   port                            = var.db_port
   snapshot_identifier             = var.snapshot_identifier
-  vpc_security_group_ids          = [join("", aws_security_group.default[*].id)]
+  vpc_security_group_ids          = [join("", try(aws_security_group.default[*].id, data.aws_security_group.default[*].id))]
   db_subnet_group_name            = var.db_subnet_group_name
   db_cluster_parameter_group_name = var.db_cluster_parameter_group_name
   engine                          = var.engine
