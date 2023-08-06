@@ -15,7 +15,7 @@ resource "aws_security_group_rule" "default" {
   to_port           = try(each.value.to_port, -1)
   protocol          = each.value.protocol
   cidr_blocks       = each.value.cidr_blocks
-  security_group_id = [join("", data.aws_security_group.default[*].id)]
+  security_group_id = data.aws_security_group.default[0].id
 }
 
 resource "random_password" "password" {
