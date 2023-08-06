@@ -133,11 +133,11 @@ variable "storage_encrypted" {
   default     = true
 }
 
-variable "kms_key_id" {
-  type        = string
-  description = "The ARN for the KMS encryption key. When specifying `kms_key_id`, `storage_encrypted` needs to be set to `true`"
-  default     = ""
-}
+# variable "kms_key_id" {
+#   type        = string
+#   description = "The ARN for the KMS encryption key. When specifying `kms_key_id`, `storage_encrypted` needs to be set to `true`"
+#   default     = ""
+# }
 
 variable "skip_final_snapshot" {
   type        = bool
@@ -299,4 +299,48 @@ variable "subnet_names" {
   description = "List of subnet names"
   type        = list(string)
   default     = []
+}
+
+
+## KMS ##
+variable "kms_key_name" {
+  description = "Name of the KMS key"
+  type        = string
+  default     = ""
+}
+
+variable "kms_description" {
+  description = "Description of the KMS key"
+  type        = string
+  default     = ""
+}
+
+variable "kms_tags" {
+  description = "Additional tags for the KMS key"
+  type        = map(string)
+  default     = {}
+}
+
+variable "kms_policy" {
+  description = "Policy of the KMS key"
+  type        = string
+  default     = ""
+}
+
+variable "kms_enable_key_rotation" {
+  description = "Whether to enable key rotation for the KMS key"
+  type        = bool
+  default     = false
+}
+
+variable "kms_deletion_window_in_days" {
+  description = "Duration in days after which the key is deleted after destruction of the resource, must be between 7 and 30 days"
+  type        = number
+  default     = 30
+}
+
+variable "create_kms_key" {
+  description = "Whether the KMS key is enabled"
+  type        = bool
+  default     = true
 }

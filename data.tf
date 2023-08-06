@@ -6,9 +6,10 @@ data "aws_vpc" "default" {
 }
 
 data "aws_subnet" "default" {
-  count  = module.this.enabled && var.subnet_names != [] ? 1 : 0
+  count  = module.this.enabled && var.subnet_names != [] ? length(var.subnet_names) : 0
   vpc_id = data.aws_vpc.default[0].id
-  tags = {
-    Name = join("", var.subnet_names)
+  filter {
+    name   = "tag:Name"
+    values = [var.subnet_names[count.index]]
   }
 }
