@@ -2,7 +2,7 @@ resource "aws_security_group" "default" {
   count       = module.this.enabled ? 1 : 0
   name        = var.security_group_name
   description = var.security_group_description
-  vpc_id      = data.aws_vpc.default[*].id
+  vpc_id      = data.aws_vpc.default[0].id
   tags        = var.security_group_tags
 }
 
