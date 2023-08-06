@@ -222,15 +222,12 @@ variable "security_group_tags" {
 variable "security_group_rules" {
   description = "Map of security group rules"
   type = map(object({
-    cidr_blocks            = list(string)
-    id                     = string
-    protocol               = string
-    security_group_id      = string
-    security_group_rule_id = string
-    type                   = string
-    description            = optional(string)
-    from_port              = optional(number)
-    to_port                = optional(number)
+    cidr_blocks = list(string)
+    protocol    = string
+    type        = string
+    description = optional(string)
+    from_port   = optional(number)
+    to_port     = optional(number)
   }))
 }
 
